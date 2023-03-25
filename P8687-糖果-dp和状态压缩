@@ -1,0 +1,36 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+const int N=105,INF=0x3f3f3f3f;//INF为常用的无穷大数值，代表这个值取不到
+int dp[1<<20];
+int s[N];
+int n,m,k;
+int main()
+{
+	//状态转移方程：dp[i]表明凑足i种口味糖果的方案数 
+	//枚举每一袋糖果，通过二进制的或运算进行糖果数的种类统计
+	scanf("%d%d%d",&n,&m,&k);	//n包糖果，m种口味，每包有k颗 
+	int all=(1<<m)-1;			//存储所有方案数，2^m-1 
+	for(int i=0;i<=all;i++)dp[i]=INF;//初始方案 
+	for(int i=0;i<n;i++)		//存储所有袋的糖果 
+	{
+		int state=0;
+		for(int j=0;j<k;j++)	//存储单袋糖果的各个口味 
+		{
+			int candy;
+			scanf("%d",&candy);
+			state|=1<<candy-1;	//状态压缩，将第i包糖果的k个口味存入state中
+		}	
+		s[i]=state;//第i袋的所有口味由二进制码存为s[i] 
+		dp[state]=1;	//可以用第i袋买到state种口味（用二进制不同位存储不同种类）
+	} 
+    for(int i=0;i<n;i++){//枚举每一袋
+        for(int j=0;j<=all;j++){//枚举所有可能状态=2^m-1 
+            if(dp[j]==INF)continue;//这个状态的糖果组合买不到，跳过
+            dp[j|s[i]]=min(dp[j|s[i]],dp[j]+1);//能买到，进行转移
+        }
+    }
+    if(dp[all]==INF)cout<<-1<<endl;
+    else cout<<dp[all]<<endl;
+    return 0;
+ } 

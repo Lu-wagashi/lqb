@@ -1,0 +1,45 @@
+//题目链接：http://vj.saikr.com/contest/20/problem/B
+#include<bits/stdc++.h>
+using namespace std;
+#define ll long long
+const ll maxn=1e5+10;
+const ll mod=1e9+7;
+ll n;
+ll a[maxn],b[maxn];
+ll l,r;
+ll check(ll eps){				//由于大的eps也可以满足条件，故本题相当于在单调区间中找到刚好满足的最小eps，可以用二分
+    memset(b,0,sizeof(b));	//初始化数组的值均为0，可以用if循环来代替，
+    b[1]=a[1]-eps;			//b[i]边界值：a[i]-eps和a[i]+eps 
+    if(b[1]<=0)
+    {
+        if(1<=(a[1]+eps))b[1]=1; //b[1]取1和a[1]-eps中的最小值，贪心-求eps最小值，对应到b[i]也是最小值，这是本题的思路关键
+      	else	return 0;		//b[1]的上边界小于1，eps不满足要求
+    }
+    for(int i=2;i<=n;i++)		//b[i]取b[i-1]+1和a[i]-eps中的最小值，贪心算法考虑
+    {
+        if((a[i]-eps)>b[i-1])	b[i]=a[i]-eps;	
+        else if((a[i]+eps)>b[i-1])	b[i]=b[i-1]+1;
+        else	return 0;
+    }
+    return 1;		//已找到
+
+}
+int main()
+{
+    cin>>n;					//存入图纸个数
+    for(int i=1;i<=n;i++)	//a[i]中存入对应的尺寸序列
+        cin>>a[i];
+    }
+    l=0,r=1e9;
+    while(l<r){				//二分法模板，寻找最小的eps
+        ll mid=(l+r)>>1;
+        if(check(mid)){
+            r=mid;
+        }else{
+            l=mid+1;
+        }
+    }
+    cout<<l;
+	return 0;
+}
+

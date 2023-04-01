@@ -1,7 +1,7 @@
 //题目链接：http://vj.saikr.com/contest/20/problem/B
 #include<bits/stdc++.h>
 using namespace std;
-#define ll long long
+#define ll long long		//本题需要超长整形数据
 const ll maxn=1e5+10;
 const ll mod=1e9+7;
 ll n;

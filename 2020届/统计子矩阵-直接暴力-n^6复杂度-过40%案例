@@ -1,0 +1,36 @@
+#include <iostream>
+using namespace std;
+
+int mat[550][550];
+
+int main() {
+	int n, m;
+	long long k;
+	cin >> n >> m >> k;
+	for (int i = 1; i <= n; i++) {
+		for (int j = 1; j <= m; j++) {
+			cin >> mat[i][j];
+		}
+	}
+	long long sum = 0;
+	long long cnt = 0;
+	for (int h1 = 1; h1 <= n; h1++) {
+		for (int h2 = h1; h2 <= n; h2++) {
+			for (int l1 = 1; l1 <= m; l1++) {
+				for (int l2 = l1; l2 <= m; l2++) {
+					sum = 0;
+					for (int h = h1; h <= h2; h++) {
+						for (int l = l1; l <= l2; l++) {
+							sum += mat[h][l];
+						}
+					}
+					if (sum <= k) {
+						cnt++;
+					}
+				}
+			}
+		}
+	}
+	cout << cnt << endl;
+	return 0;
+}

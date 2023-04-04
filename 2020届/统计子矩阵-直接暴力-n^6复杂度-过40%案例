@@ -20,7 +20,7 @@ int main() {
 				for (int l2 = l1; l2 <= m; l2++) {
 					sum = 0;
 					for (int h = h1; h <= h2; h++) {
-						for (int l = l1; l <= l2; l++) {
+						for (int l = l1; l <= l2; l++) {//进行6个循环的求解
 							sum += mat[h][l];
 						}
 					}

@@ -1,0 +1,47 @@
+#include<bits/stdc++.h>
+using namespace std; 
+const int N = 5e4+10; 
+struct node{ int x, y, r; };    //定义结构体，记录某个火箭/炸雷的x，y，r值，跟用三个数组来储存效果是一致的，比如x[i],y[i],r[i]
+int n, m; 
+int x, y, r; 
+int ans, st[N]; 
+vector <node> a;      //记录a节点值
+vector <int> v[N], u; 
+double dist (node a, node b)  //计算两点的距离
+{ 
+  return sqrt ((a.x - b.x) * (a.x -b.x) + (a.y - b.y) * (a.y - b.y)); 
+}
+int dfs (int x) {     //dfs深搜，统计可互相引爆的值（可理解为连通的雷数），x代表当前雷
+  if (st[x]) return 0;  //st[x]=1代表已经搜索过该雷x
+  st[x] = 1; 
+  int res = 1;        //res统计连通值，这里用dfs实现
+  for (int i = 0;i < v[x].size();i ++)  //遍历可以被雷x引爆的雷，范围为v[x].size长度
+    if (st[v[x][i]]==0) res+= dfs (v[x][i]);  //v[x][i]代表可以被雷x引爆的雷i，进入下一步深搜
+  return res; 
+} 
+int main() 
+{ 
+  cin >> n >> m; 
+  for (int i = 0;i < n;i ++) //存入炸雷坐标
+  { 
+    cin >> x >> y >> r; 
+    a.push_back ({x,y,r}); 
+  } 
+  for (int i = 0;i < a.size();i ++) //计算炸雷是否会互相引爆
+    for (int j = 0;j < a.size();j ++) //陷阱1：炸雷a和炸雷b不能互相引爆，需取决于距离与各自的半径关系
+      if (i != j && dist (a[i], a[j]) <= 1.0* a[i].r)   //雷b位于雷a的半径内
+        v[i].push_back (j);              //v[i]容器内的元素代表可以被雷a引爆          
+  for (int i = 0;i < m;i ++) 
+  { 
+    cin >> x >> y >> r;
+    for (int j = 0;j < n;j ++) 
+    { 
+      if (dist ({x, y, r}, a[j]) <= 1.0 * r)    ////计算火箭i是否能引爆炸雷j
+        u.push_back(j);                         //u容器内的元素代表可以被火箭引爆的炸雷
+    } 
+  } 
+  for (int i = 0;i < u.size();i ++) 
+    ans += dfs (u[i]);        //遍历可以引爆炸雷的火箭
+  cout << ans <<endl; 
+  return 0; 
+}

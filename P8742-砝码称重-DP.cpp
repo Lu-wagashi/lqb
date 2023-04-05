@@ -4,7 +4,7 @@ using namespace std;
 const int maxn=105;	//数字最大个数 
 const int maxm=200005; //所有数字的和的最大数 
 int n,w[maxn],sum,ans;
-bool dp[maxn][maxm];
+bool dp[maxn][maxm];//dp[i][j]=1，代表可以用前i个砝码称量出重量j，=0时代表不能 
 int main()
 {
 	scanf("%d",&n); 

@@ -1,0 +1,42 @@
+#include<bits/stdc++.h>
+using namespace std;
+const int N = 100;
+long long mod = 1000000007;
+int n, m;
+int a[N];//记录遇见物品
+int res = 0;
+int sum;
+int main() {
+	cin >> n >> m;//n-1代表店，m-0代表花
+	for (int i = 0; i < m; i++) {//题目的排列0代表花
+		a[i] = 0;
+	}
+	for (int i = m; i < n + m; i++) { //1代表店
+		a[i] = 1;
+	}
+	int l = m + n;//序列长度为m个0和n个1
+	do {
+		sum = 2;
+ 
+		for (int i = 0; i < l; i++) 
+		{
+			if (sum < 0) //sum<0代表当前的酒为负数，该全排列不符合条件，跳出21行循环
+			{//注意这里不用考虑sum=0，如i-1次无酒，若i次为花，则sum=-1；若i次为店，则sum=0，继续计算			    
+				break;
+			}
+			if(a[l-1]==1)//最后一次不能为店
+			{
+			    break;
+			}
+			if (a[i] == 0) sum--;//遇到花
+			else if (a[i] == 1) sum *= 2;////遇到店
+		}
+ 
+		if (sum == 0) res++;//酒刚好喝完sum=0
+ 
+ 
+	} while (next_permutation(a, a + l));
+ 
+	cout << res % mod;
+	return 0;
+}

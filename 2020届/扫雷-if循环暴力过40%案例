@@ -1,0 +1,50 @@
+#include<bits/stdc++.h>
+using namespace std;
+const int N = 1e5 + 10;
+int n, m;
+int x[N], y[N], r[N];
+int xx[N], yy[N], rr[N];
+ 
+bool check(int x, int y, int r, int a, int b) { //判断能否炸到
+	if (sqrt((x - a) * (x - a) + (y - b) * (y - b)) <= r) return 1;
+	return 0;
+}
+bool check1(int x, int y, int r, int xx, int yy, int rr) { //判断炸雷能否引爆炸雷
+	if (sqrt((x - xx) * (x - xx) + (y - yy) * (y - yy)) <= r + rr) return 1;
+	return 0;
+}
+bool p[N];
+int ans;
+int main() {
+	cin >> n >> m;
+	for (int i = 1; i <= n; i++) { //炸雷
+		cin >> x[i] >> y[i] >> r[i];
+	}
+	for (int i = 1; i <= m; i++) { //排雷火箭
+		cin >> xx[i] >> yy[i] >> rr[i];
+	}
+	for (int i = 1; i <= m; i++) {//枚举排雷火箭
+		for (int j = 1; j <= n; j++) {
+			if (check(xx[i], yy[i], rr[i], x[j], y[j]) && p[j] != 1) {//未炸过的
+				ans++;
+				p[j] = 1;//该炸雷标记会爆
+			}
+		}
+	}
+ 
+	for (int i = 1; i <= n; i++) {//枚举已炸的
+		for (int j = 1; j <= n; j++) {//未炸的
+			if (p[i]==1) break;
+			else {
+				if (!p[j]) {//之前没炸过
+					if (check1(x[i], y[i], r[i], xx[j], yy[j], rr[j])) {
+						ans++;
+						p[j] = 1;
+					}
+				}
+			}
+		}
+	}
+	cout << ans;
+	return 0;
+}

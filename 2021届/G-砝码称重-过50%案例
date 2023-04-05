@@ -1,0 +1,82 @@
+//方法1：经典dfs模版，但是只能过10%案例
+#include<bits/stdc++.h>
+using namespace std;
+
+int n;
+int w[102];
+int flag[102];
+set<int> ans;
+//int ans;bool flat[102];
+int ff=0;
+void dfs(int sum1,int sum2){
+    if(sum1<sum2)return ;//左边重和右边重情况是一样的
+    else{
+        if(sum1>sum2){
+        	ans.insert(sum1-sum2);//答案
+	        /*int p = sum1 - sum2;
+	        if(!flat[p])    //flat==0，该重量答案未考虑过 
+	            ans++;
+	        flat[p] = true;*/
+        }
+    }
+    for(int i=1;i<=n;i++){
+        if(!flag[i]){			//flag[i]=0,砝码i未用过，执行下列程序 
+            flag[i]=1;
+            dfs(sum1+w[i],sum2);//砝码放左边
+            dfs(sum1,sum2+w[i]);//砝码放右边
+            flag[i]=0;//标记砝码已经被选中了
+        }
+    }
+}
+int main(){
+    scanf("%d",&n);
+    for(int i=1;i<=n;i++){
+        scanf("%d",&w[i]);
+    }
+    /*
+    n=3;
+	w[0]=1;w[1]=4;w[2]=6; */
+    dfs(0,0);
+    printf("%d",ans.size());
+    return 0;
+}
+//方法2：改良dfs，能过50%案例
+/*
+#include<bits/stdc++.h>
+using namespace std;
+
+const int N = 100005;
+int n;
+int a[N];
+bool flag[N];
+int ans;
+
+void dfs(int idx,int left,int right)//idx:当前考虑的砝码下标 
+{
+    if(idx == n)    //dfs边界：结果已枚举完
+    {
+        int p = abs(left - right);
+        if(!flag[p])    //flag==0，该重量未考虑过
+            ans++;
+        flag[p] = true;//这里用flag记录一维数据是否出现过，换用set容器也行
+        return;
+    }
+    dfs(idx + 1,left + a[idx],right);//a[idx]砝码放在左天平
+    dfs(idx + 1,left,right);			//不选idx 
+    dfs(idx + 1,left,right + a[idx]);//a[idx]砝码放在右天平
+}
+
+int main()
+{
+    flag[0] = true;//重量==0的初始化，对应到16行不应该考虑重量=0是可称量的结果之一 
+    cin >> n;//砝码个数
+    //n=3;
+	//a[0]=1;a[1]=4;a[2]=6; 
+    for(int i = 0 ; i < n ; i++)
+       cin >> a[i];
+    dfs(0,0,0);//暴力深搜枚举所有结果
+    cout << ans;
+    
+    return 0;
+}
+*/
